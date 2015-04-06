@@ -1,0 +1,16 @@
+{% extends 'JosuTestWebBundle::base.html.twig' %}
+
+{% block body %}
+	{% if error %}
+	    <div class="alert alert-error">
+	        <strong>Error!</strong> : {{ error }}
+	    </div>
+
+	{% endif %}
+
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+
+	
+{% endblock %}

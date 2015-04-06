@@ -1,0 +1,5 @@
+josu_test_web:
+    resource: "@JosuTestWebBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
