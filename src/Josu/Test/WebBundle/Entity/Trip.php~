@@ -53,11 +53,16 @@ class Trip
     /**
      * @ORM\ManyToMany(targetEntity="Passenger", inversedBy="null", cascade={"persist"})
      * @ORM\JoinTable(name="trip_passenger",
-     * joinColumns={@ORM\JoinColumn(name="passenger_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="trip_id", referencedColumnName="id")}
+     * joinColumns={@ORM\JoinColumn(name="trip_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="passenger_id", referencedColumnName="id")}
      * )
      */
     private $passengers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Customer", inversedBy=null)
+     **/
+    private $customer;
 
 
     /**
@@ -160,5 +165,68 @@ class Trip
     public function getArrivalDate()
     {
         return $this->arrivalDate;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->passengers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add passengers
+     *
+     * @param \Josu\Test\WebBundle\Entity\Passenger $passengers
+     * @return Trip
+     */
+    public function addPassenger(\Josu\Test\WebBundle\Entity\Passenger $passengers)
+    {
+        $this->passengers[] = $passengers;
+
+        return $this;
+    }
+
+    /**
+     * Remove passengers
+     *
+     * @param \Josu\Test\WebBundle\Entity\Passenger $passengers
+     */
+    public function removePassenger(\Josu\Test\WebBundle\Entity\Passenger $passengers)
+    {
+        $this->passengers->removeElement($passengers);
+    }
+
+    /**
+     * Get passengers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPassengers()
+    {
+        return $this->passengers;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \Josu\Test\WebBundle\Entity\Customer $customer
+     * @return Trip
+     */
+    public function setCustomer(\Josu\Test\WebBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \Josu\Test\WebBundle\Entity\Customer 
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }

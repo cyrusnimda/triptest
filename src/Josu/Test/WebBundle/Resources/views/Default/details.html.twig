@@ -91,27 +91,39 @@
 						<th>Passengers</th>
 						<th></th>
 					</tr>
-					{% for passenger in passengers %}
+					{% for trip in trips %}
 					<tr>
-						<td>{{passenger.title}}</td>
-						<td>{{passenger.firstname}}</td>
-						<td>{{passenger.surname}}</td>
-						<td>{{passenger.passportid}}</td>
-						<td>{{passenger.passportid}}</td>
-						<td><a data-href="trip/delete/{{ passenger.id }}" data-toggle="modal" data-target="#confirm-delete-trip" href="#">
+						<td>{{trip.departureAirport}}</td>
+						<td>{{trip.destinationAirport}}</td>
+						<td>{{trip.departureDate | date('d/M/Y') }}</td>
+						<td>{{trip.arrivalDate | date('d/M/Y') }}</td>
+						<td>
+							{% for passenger in trip.passengers %}
+								{{passenger.title}} {{passenger.firstname}} {{passenger.surname}}
+								{% if loop.last == false %}
+								,
+								{% endif %}
+							{% endfor%}
+						</td>
+						<td><a data-href="trip/delete/{{ trip.id }}" data-toggle="modal" data-target="#confirm-delete-trip" href="#">
 							        		<button class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button></a>
 						</td>
 					</tr>
 					{% endfor%}
 				</table>
-				<a data-toggle="modal" data-target="#add-passenger" href="#"><button class="btn btn-success pull-right">Add</button></a>
+				<a data-toggle="modal" data-target="#add-trip" href="#"><button class="btn btn-success pull-right">Add</button></a>
 
 
 		      </div>
 		    </div>
 			
 		</div>
+
+		
+
 	</div>
+
+	
 
 	<div class="modal fade" id="add-passenger" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		    <div class="modal-dialog">
@@ -123,6 +135,65 @@
 		                {{ form_start(form) }}
 						{{ form_widget(form) }}
 						{{ form_end(form) }}
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="add-trip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <strong>Add trip</strong>
+		            </div>
+		            <div class="modal-body">
+		                <div  class="col-sm-12">
+							<form method="post" action="{{ path('addTrip') }}" class="form-horizontal" role="form">
+								<div class="form-group">
+								  <label class="control-label col-sm-2" for="name">From:</label>
+								  <div class="col-sm-10">
+								    <input type="text" name="from" class="form-control">
+								  </div>
+								</div>
+								<div class="form-group">
+								  <label class="control-label col-sm-2" for="pwd">To:</label>
+								  <div class="col-sm-10">          
+								    <input type="text" name="to" class="form-control">
+								  </div>
+								</div>
+
+								<div class="form-group">
+								  <label class="control-label col-sm-2" for="pwd">Departure:</label>
+								  <div class="col-sm-10">          
+								    <input type="date" name="departure" class="form-control" >
+								  </div>
+								</div>
+
+								<div class="form-group">
+								  <label class="control-label col-sm-2" for="pwd">Arrival:</label>
+								  <div class="col-sm-10">          
+								    <input type="date" name="arrival" class="form-control" >
+								  </div>
+								</div>
+
+								<div class="form-group">
+								  <label class="control-label col-sm-2">Passengers:</label>
+								  <div class="col-sm-10">          
+							    	{% for passenger in passengers %}
+										<p><input type="checkbox" name="passenger[]" value="{{passenger.id}}"/>
+										{{passenger.title}} {{passenger.firstname}} {{passenger.surname}}</p>
+									{% endfor%}
+								  </div>
+								</div>
+
+								<button class="btn btn-success pull-right" type="submit">Add trip</button>
+
+							</form>
+						</div>
 		            </div>
 		            <div class="modal-footer">
 		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -150,14 +221,38 @@
 		    </div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="confirm-delete-trip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <strong>Alert</strong>
+		            </div>
+		            <div class="modal-body">
+		            	Do you want to delete this trip?, this proccess won't be undone.
+		                
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		                <a href="#" class="btn btn-danger danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</a>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts_section %}
 
 	<script>
 		$( document ).ready(function() {
-			// Muestra el mensaje de confirmacion al pinchar en el boton eliminar
+			// popup for delete passengers
 			$('#confirm-delete').on('show.bs.modal', function(e) {
+			    $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
+			});
+
+			// popup for delete trips
+			$('#confirm-delete-trip').on('show.bs.modal', function(e) {
 			    $(this).find('.danger').attr('href', $(e.relatedTarget).data('href'));
 			});
 

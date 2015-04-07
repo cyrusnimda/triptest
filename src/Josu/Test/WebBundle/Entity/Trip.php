@@ -4,6 +4,7 @@ namespace Josu\Test\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Josu\Test\WebBundle\Entity\Passenger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Trip
@@ -24,28 +25,30 @@ class Trip
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min = 3, max = 3)
      * @ORM\Column(name="departure_airport", type="string", length=3)
      */
     private $departureAirport;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min = 3, max = 3)
      * @ORM\Column(name="destination_airport", type="string", length=3)
      */
     private $destinationAirport;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="departure_date", type="datetime")
      */
     private $departureDate;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="arrival_date", type="datetime")
      */
     private $arrivalDate;
@@ -53,8 +56,8 @@ class Trip
     /**
      * @ORM\ManyToMany(targetEntity="Passenger", inversedBy="null", cascade={"persist"})
      * @ORM\JoinTable(name="trip_passenger",
-     * joinColumns={@ORM\JoinColumn(name="passenger_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="trip_id", referencedColumnName="id")}
+     * joinColumns={@ORM\JoinColumn(name="trip_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="passenger_id", referencedColumnName="id")}
      * )
      */
     private $passengers;
@@ -205,5 +208,28 @@ class Trip
     public function getPassengers()
     {
         return $this->passengers;
+    }
+
+    /**
+     * Set customer
+     *
+     * @param \Josu\Test\WebBundle\Entity\Customer $customer
+     * @return Trip
+     */
+    public function setCustomer(\Josu\Test\WebBundle\Entity\Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Get customer
+     *
+     * @return \Josu\Test\WebBundle\Entity\Customer 
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
     }
 }
