@@ -156,4 +156,8 @@ class Passenger
     {
         return $this->passportid;
     }
+
+    public function getName(){
+        return $this->getTitle() . " " . $this->getFirstname() . " " . $this->getSurname();
+    }
 }

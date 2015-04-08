@@ -232,4 +232,5 @@ class Trip
     {
         return $this->customer;
     }
+
 }

@@ -10,6 +10,7 @@ use Josu\Test\WebBundle\Entity\Passenger;
 use Josu\Test\WebBundle\Entity\Customer;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Josu\Test\WebBundle\Entity\Trip;
+use Josu\Test\WebBundle\Form\TripType;
 
 class DefaultController extends Controller
 {
@@ -24,6 +25,9 @@ class DefaultController extends Controller
     	// Check is the user is logged in the system
     	
     	$customer = $this->loadSessionUser();
+    	if(!$customer){
+    		return $this->redirectToRoute('login_route');
+    	}
 
     	//Create de passenger form
     	$passenger = new Passenger();
@@ -40,11 +44,25 @@ class DefaultController extends Controller
 
         // if the passenger form is sent, save the record
 	    if ($form->isValid()) {
-	       	
 	       	$em->persist($form->getData());
        		$em->flush();
 	        return $this->redirectToRoute('_details');
 	    }
+
+        // Create the trip form
+        $trip = new Trip();
+    	$tripForm = $this->createForm(new TripType(), $trip);
+    	$tripForm->handleRequest($request);
+
+		// if the trip form is sent, save the record
+	    if ($tripForm->isValid()) {
+	    	$trip = $tripForm->getData();
+	    	$trip->setCustomer($customer);
+	       	$em->persist($trip);
+       		$em->flush();
+	        return $this->redirectToRoute('_details');
+	    }
+        
 
 	    //show all passengers
 	    $passengers = $em->getRepository('JosuTestWebBundle:Passenger')->findAll();
@@ -53,7 +71,7 @@ class DefaultController extends Controller
 	    $trips = $em->getRepository('JosuTestWebBundle:Trip')->findByCustomer($customer);
 
 
-        return array('trips'=>$trips,'customer' => $customer, 'form' => $form->createView(), 'passengers' => $passengers);
+        return array('tripForm'=>$tripForm->createView(), 'trips'=>$trips,'customer' => $customer, 'form' => $form->createView(), 'passengers' => $passengers);
     }
 
 
@@ -137,46 +155,6 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('_details'));
     }
 
-    /**
-     * @Route("/trip/add", name="addTrip")
-     */
-    public function addTripAction(Request $request)
-    {
-    	$em = $this->getDoctrine()->getManager();
-
-    	// check the session user
-    	$customer = $this->loadSessionUser();
-
-    	$trip = new Trip;
-    	$trip->setDepartureAirport($request->get("from"));
-    	$trip->setDestinationAirport($request->get("to"));
-
-		$departureDate = new \DateTime( $request->get("departure") );
-		$arrivalDate = new \DateTime( $request->get("arrival") );
-
-    	$trip->setDepartureDate($departureDate);
-    	$trip->setArrivalDate($arrivalDate);
-    	$trip->setCustomer($customer);
-
-    	// for each passenger checked, add them to the list.
-    	if($request->get("passenger")){
-    		foreach ($request->get("passenger") as $passenger_id ) {
-	    		$passenger = $em->getRepository('JosuTestWebBundle:Passenger')->find($passenger_id);
-	    		if($passenger){
-	    			$trip->addPassenger($passenger);
-	    		}
-	    	}
-    	}
-    	
-
-    	// save the trip and their passenger.
-		$em->persist($trip);
-       	$em->flush();
-    	
-    	// If all correct, return to details page.
-    	return $this->redirect($this->generateUrl('_details'));
-    }
-
     /*
      * Get the customer from the session, if there is none, 
      * redirect to the login page.
@@ -190,7 +168,7 @@ class DefaultController extends Controller
     	$session = new Session();
     	$sessionUser = $session->get('loginUser');
     	if(!$sessionUser){
-    		return $this->redirect($this->generateUrl('login_route'));
+    		return false;
     	}
 
     	// Load the session customer
