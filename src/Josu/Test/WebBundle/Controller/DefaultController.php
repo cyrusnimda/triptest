@@ -11,6 +11,7 @@ use Josu\Test\WebBundle\Entity\Customer;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Josu\Test\WebBundle\Entity\Trip;
 use Josu\Test\WebBundle\Form\TripType;
+use Josu\Test\WebBundle\Form\PassengerType;
 
 class DefaultController extends Controller
 {
@@ -21,57 +22,47 @@ class DefaultController extends Controller
      */
     public function detailsAction(Request $request)
     {
-    	$em = $this->getDoctrine()->getManager();
-    	// Check is the user is logged in the system
-    	
-    	$customer = $this->loadSessionUser();
-    	if(!$customer){
-    		return $this->redirectToRoute('login_route');
-    	}
+        $em = $this->getDoctrine()->getManager();
 
-    	//Create de passenger form
-    	$passenger = new Passenger();
+        // Check is the user is logged in the system
+        $customer = $this->loadSessionUser();
+        if(!$customer){
+            return $this->redirectToRoute('login_route');
+        }
 
-        $form = $this->createFormBuilder($passenger)
-            ->add('title', 'text')
-            ->add('firstname', 'text')
-            ->add('surname', 'text')
-            ->add('passportid', 'text')
-            ->add('save', 'submit', array('label' => 'Add'))
-            ->getForm();
-
-        $form->handleRequest($request);
+        //Create de passenger form
+        $passenger = new Passenger();
+        $passengerForm = $this->createForm(new PassengerType(), $passenger);
+        $passengerForm->handleRequest($request);
 
         // if the passenger form is sent, save the record
-	    if ($form->isValid()) {
-	       	$em->persist($form->getData());
-       		$em->flush();
-	        return $this->redirectToRoute('_details');
-	    }
+        if ($passengerForm->isValid()) {
+            $em->persist($passengerForm->getData());
+            $em->flush();
+            return $this->redirectToRoute('_details');
+        }
 
         // Create the trip form
         $trip = new Trip();
-    	$tripForm = $this->createForm(new TripType(), $trip);
-    	$tripForm->handleRequest($request);
+        $tripForm = $this->createForm(new TripType(), $trip);
+        $tripForm->handleRequest($request);
 
-		// if the trip form is sent, save the record
-	    if ($tripForm->isValid()) {
-	    	$trip = $tripForm->getData();
-	    	$trip->setCustomer($customer);
-	       	$em->persist($trip);
-       		$em->flush();
-	        return $this->redirectToRoute('_details');
-	    }
-        
+        // if the trip form is sent, save the record
+        if ($tripForm->isValid()) {
+            $trip = $tripForm->getData();
+            $trip->setCustomer($customer);
+            $em->persist($trip);
+            $em->flush();
+            return $this->redirectToRoute('_details');
+        }
 
-	    //show all passengers
-	    $passengers = $em->getRepository('JosuTestWebBundle:Passenger')->findAll();
+        //show all passengers
+        $passengers = $em->getRepository('JosuTestWebBundle:Passenger')->findAll();
 
-	    //show all trips from the actual customer
-	    $trips = $em->getRepository('JosuTestWebBundle:Trip')->findByCustomer($customer);
+        //show all trips from the actual customer
+        $trips = $em->getRepository('JosuTestWebBundle:Trip')->findByCustomer($customer);
 
-
-        return array('tripForm'=>$tripForm->createView(), 'trips'=>$trips,'customer' => $customer, 'form' => $form->createView(), 'passengers' => $passengers);
+        return array('tripForm'=>$tripForm->createView(), 'trips'=>$trips,'customer' => $customer, 'form' => $passengerForm->createView(), 'passengers' => $passengers);
     }
 
 
@@ -80,7 +71,7 @@ class DefaultController extends Controller
      */
     public function deletePassengerAction($passenger_id)
     {
-        // comprobar que es un id válido, sino mostrar una excepcion.
+        // check the parameter.
         if($passenger_id == 0)
             throw new Exception("Don't be evil");
 
@@ -89,7 +80,7 @@ class DefaultController extends Controller
         if(!$passenger)
             throw new NotFoundHttpException("passenger don't found");
 
-        //borrar la venta y redireccionar a la pagina de inicio de admin
+        //delete the passenger
         $em->remove($passenger);
         $em->flush();
 
@@ -102,7 +93,7 @@ class DefaultController extends Controller
      */
     public function loginAction(Request $request)
     {
-    	//Create de passenger form
+    	//Create the customer form
     	$user = new Customer();
     	$error = null;
 
@@ -115,23 +106,21 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         // if the form is sent, save the record
-	    if ($form->isValid()) {
-	       	$user = $form->getData();
-	       	$userLogin = $this->loginSuccess($user);
-	       	if($userLogin != null){
-				$session = new Session();
+        if ($form->isValid()) {
+            $user = $form->getData();
+            $userLogin = $this->loginSuccess($user);
+            if($userLogin != null){
+                $session = new Session();
 
-				// set and get session attributes
-				$session->set('loginUser', $userLogin->getId() );
-
-	       		return $this->redirectToRoute('_details');
-	       	} else{
-	       		$error= "User or password incorrect.";
-	        }
-	    }
+                // set and get session attributes
+                $session->set('loginUser', $userLogin->getId() );
+                return $this->redirectToRoute('_details');
+            } else{
+                $error= "User or password incorrect.";
+            }
+        }
 
 	    return array('error'=> $error, 'form' => $form->createView());
-
     }
 
     /**
@@ -156,7 +145,7 @@ class DefaultController extends Controller
     }
 
     /*
-     * Get the customer from the session, if there is none, 
+     * Get the customer from the session, if there is none,
      * redirect to the login page.
      *
      * return Customer object.
@@ -183,7 +172,7 @@ class DefaultController extends Controller
 	 * Check in the database is the customer exists.
 	 * @param Customer $user -> the user to check
 	 *
-	 * return Customer object or null.  
+	 * return Customer object or null.
      */
     private function loginSuccess($user){
     	$em = $this->getDoctrine()->getManager();
