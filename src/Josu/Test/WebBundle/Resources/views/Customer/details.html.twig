@@ -110,8 +110,8 @@
 								<tr>
 									<td>{{trip.departureAirport}}</td>
 									<td>{{trip.destinationAirport}}</td>
-									<td>{{trip.departureDate | date('d/M/Y') }}</td>
-									<td>{{trip.arrivalDate | date('d/M/Y') }}</td>
+									<td>{{trip.departureDate | date('d/M/Y H:i') }}</td>
+									<td>{{trip.arrivalDate | date('d/M/Y H:i') }}</td>
 									<td>
 										{% for passenger in trip.passengers %}
 											{{passenger.title}} {{passenger.firstname}} {{passenger.surname}}
