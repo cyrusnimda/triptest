@@ -7,7 +7,7 @@ Install guide
 
 2) Update vendors (You must have php-cli installed)
 
-  - php composer.phar update
+  - php composer.phar install
 
 
 3) Create database (You must have mysql-server running)
@@ -16,7 +16,7 @@ Install guide
   - php app/console doctrine:database:create
   - php app/console doctrine:schema:update --force
 
-4) Create at least one costumer 
+4) Create at least one costumer
 
   - use your Mysql favorite client for this.
 
