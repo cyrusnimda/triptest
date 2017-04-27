@@ -1,3 +1,7 @@
 BODY{background-color: #dadbdb;}
 
 .sectionBody{min-height: 400px;}
+
+.ui-widget-header .ui-icon{
+    background-image: url("../assets/vendor/jquery-ui/themes/redmond/images/ui-icons_d8e7f3_256x240.png");
+}
