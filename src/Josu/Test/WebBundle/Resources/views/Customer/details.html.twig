@@ -3,168 +3,175 @@
 {% block body %}
 	<div>
 		<div class="row">
-			<div class="panel panel-info col-sm-4">
+			<div class="col-sm-4">
+				<div class="panel panel-info">
 
-				<div class="panel-heading">
-					<h3 id="panel-title" class="panel-title">Basic info<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
-				</div>
-
-				<div class="panel-body">
-
-					<div class="row">
-						<div class="col-sm-4">
-						    <strong>Name:</strong>
-					    </div>
-					    <div class="col-sm-8">
-						    <span>{{ customer.name}}</span>
-					    </div>
+					<div class="panel-heading">
+						<h3 id="panel-title" class="panel-title">Basic info</h3>
 					</div>
 
-					<div class="row">
-						<div class="col-sm-4">
-						    <strong>Address:</strong>
-					    </div>
-					    <div class="col-sm-8">
-						    <span>{{ customer.address}}</span>
-					    </div>
+					<div class="panel-body">
+
+						<div class="row">
+							<div class="col-sm-4">
+							    <strong>Name:</strong>
+						    </div>
+						    <div class="col-sm-8">
+							    <span>{{ customer.name}}</span>
+						    </div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-4">
+							    <strong>Address:</strong>
+						    </div>
+						    <div class="col-sm-8">
+							    <span>{{ customer.address}}</span>
+						    </div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-4">
+							    <strong>City:</strong>
+						    </div>
+						    <div class="col-sm-8">
+							    <span>{{ customer.city}}</span>
+						    </div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-4">
+							    <strong>Country:</strong>
+						    </div>
+						    <div class="col-sm-8">
+							    <span>{{ customer.country}}</span>
+						    </div>
+						</div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 id="panel-title" class="panel-title">Passengers<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
 					</div>
+					<div class="panel-body">
 
-					<div class="row">
-						<div class="col-sm-4">
-						    <strong>City:</strong>
-					    </div>
-					    <div class="col-sm-8">
-						    <span>{{ customer.city}}</span>
-					    </div>
+						<table class="table">
+							<tr>
+								<th>Title</th>
+								<th>First Name</th>
+								<th>Surname</th>
+								<th>Pastport ID</th>
+								<th>Options</th>
+							</tr>
+							{% for passenger in passengers %}
+								<tr>
+									<td>{{passenger.title}}</td>
+									<td>{{passenger.firstname}}</td>
+									<td>{{passenger.surname}}</td>
+									<td>{{passenger.passportid}}</td>
+									<td>
+										<a onclick="return confirm('Are you sure?')" href="{{ path('delete_passenger', {'passenger': passenger.id}) }}">
+										    <button class="btn btn-danger"> Delete</button>
+										</a>
+									</td>
+								</tr>
+							{% endfor%}
+						</table>
+						<a data-toggle="modal" data-target="#add-passenger" href="#"><button class="btn btn-success pull-right">Add</button></a>
+			        </div>
+			    </div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+			    <div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 id="panel-title" class="panel-title">Trips<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
 					</div>
+			        <div class="panel-body">
 
-					<div class="row">
-						<div class="col-sm-4">
-						    <strong>Country:</strong>
-					    </div>
-					    <div class="col-sm-8">
-						    <span>{{ customer.country}}</span>
-					    </div>
-					</div>
-		        </div>
-		    </div>
-
-		    <div class="panel panel-info col-sm-12">
-				<div class="panel-heading">
-					<h3 id="panel-title" class="panel-title">Passengers<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
-				</div>
-				<div class="panel-body">
-
-				<table class="table">
-					<tr>
-						<th>Title</th>
-						<th>First Name</th>
-						<th>Surname</th>
-						<th>Pastport ID</th>
-						<th>Options</th>
-					</tr>
-					{% for passenger in passengers %}
-						<tr>
-							<td>{{passenger.title}}</td>
-							<td>{{passenger.firstname}}</td>
-							<td>{{passenger.surname}}</td>
-							<td>{{passenger.passportid}}</td>
-							<td>
-								<a onclick="return confirm('Are you sure?')" href="passenger/delete/{{ passenger.id }}">
-								    <button class="btn btn-danger"> Delete</button>
-								</a>
-							</td>
-						</tr>
-					{% endfor%}
-				</table>
-				<a data-toggle="modal" data-target="#add-passenger" href="#"><button class="btn btn-success pull-right">Add</button></a>
-
-
-		      </div>
-		    </div>
-
-		    <div class="panel panel-info col-sm-12">
-		      <div class="panel-heading">
-		        <h3 id="panel-title" class="panel-title">Trips<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
-		      </div>
-		      <div class="panel-body">
-
-				<table class="table">
-					<tr>
-						<th>From</th>
-						<th>To</th>
-						<th>Departure</th>
-						<th>Arrival</th>
-						<th>Passengers</th>
-						<th></th>
-					</tr>
-					{% for trip in trips %}
-						<tr>
-							<td>{{trip.departureAirport}}</td>
-							<td>{{trip.destinationAirport}}</td>
-							<td>{{trip.departureDate | date('d/M/Y') }}</td>
-							<td>{{trip.arrivalDate | date('d/M/Y') }}</td>
-							<td>
-								{% for passenger in trip.passengers %}
-									{{passenger.title}} {{passenger.firstname}} {{passenger.surname}}
-									{% if loop.last == false %}
-									,
-									{% endif %}
-								{% endfor%}
-							</td>
-							<td>
-								<a onclick="return confirm('Are you sure?')" href="trip/delete/{{ trip.id }}">
-									<button class="btn btn-danger"> Delete</button>
-								</a>
-							</td>
-						</tr>
-					{% endfor%}
-				</table>
-				<a data-toggle="modal" data-target="#add-trip" href="#">
-					<button class="btn btn-success pull-right">Add</button>
-				</a>
-		      </div>
-		    </div>
+						<table class="table">
+							<tr>
+								<th>From</th>
+								<th>To</th>
+								<th>Departure</th>
+								<th>Arrival</th>
+								<th>Passengers</th>
+								<th>Options</th>
+							</tr>
+							{% for trip in trips %}
+								<tr>
+									<td>{{trip.departureAirport}}</td>
+									<td>{{trip.destinationAirport}}</td>
+									<td>{{trip.departureDate | date('d/M/Y H:i') }}</td>
+									<td>{{trip.arrivalDate | date('d/M/Y H:i') }}</td>
+									<td>
+										{% for passenger in trip.passengers %}
+											{{passenger.title}} {{passenger.firstname}} {{passenger.surname}}
+											{% if loop.last == false %}
+											,
+											{% endif %}
+										{% endfor%}
+									</td>
+									<td>
+										<a onclick="return confirm('Are you sure?')" href="{{ path('delete_trip', {'trip': trip.id}) }}">
+											<button class="btn btn-danger"> Delete</button>
+										</a>
+									</td>
+								</tr>
+							{% endfor%}
+						</table>
+						<a data-toggle="modal" data-target="#add-trip" href="#">
+							<button class="btn btn-success pull-right">Add</button>
+						</a>
+			        </div>
+			    </div>
+			</div>
 		</div>
 	</div>
 
 
 	<div class="modal fade" id="add-passenger" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <strong>Add passsenger</strong>
-		            </div>
-		            <div class="modal-body">
-		                {{ form_start(form) }}
-						{{ form_widget(form) }}
-						{{ form_end(form) }}
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-		            </div>
-		        </div>
-		    </div>
-		</div>
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <strong>Add passsenger</strong>
+	            </div>
+	            <div class="modal-body">
+	                {{ form_start(form) }}
+					{{ form_widget(form) }}
+					{{ form_end(form) }}
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 
 	<div class="modal fade" id="add-trip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <strong>Add trip</strong>
-		            </div>
-		            <div class="modal-body">
-		              	{{ form_start(tripForm) }}
-						{{ form_widget(tripForm) }}
-						{{ form_end(tripForm) }}
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-		            </div>
-		        </div>
-		    </div>
-		</div>
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <strong>Add trip</strong>
+	            </div>
+	            <div class="modal-body">
+	              	{{ form_start(tripForm) }}
+					{{ form_widget(tripForm) }}
+					{{ form_end(tripForm) }}
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 
 

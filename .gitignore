@@ -8,4 +8,7 @@
 /bin/
 /vendor/
 /web/bundles/
+/web/css/
+/web/js/
 *php~
+/web/assets/

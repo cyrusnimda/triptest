@@ -6,23 +6,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Josu\Test\WebBundle\Entity\Passenger;
+
 class PassengerController extends Controller
 {
     /**
-     * @Route("/passenger/delete/{passenger_id}", name="delete_passenger", requirements={"passenger_id" = "\d+"}, defaults={"passenger_id" = 0})
+     * @Route("/passenger/delete/{passenger}", name="delete_passenger")
      */
-    public function deletePassengerAction($passenger_id)
+    public function deletePassengerAction(Passenger $passenger)
     {
         // check the parameter.
-        if($passenger_id == 0)
+        if(!$passenger){
             throw new Exception("Don't be evil");
-
-        $em = $this->getDoctrine()->getManager();
-        $passenger = $em->getRepository('JosuTestWebBundle:Passenger')->find($passenger_id);
-        if(!$passenger)
-            throw new NotFoundHttpException("passenger don't found");
+        }
 
         //delete the passenger
+        $em = $this->getDoctrine()->getManager();
         $em->remove($passenger);
         $em->flush();
 

@@ -5,9 +5,10 @@ Install guide
 - git clone git@bitbucket.org:cyrusnimda/triptest.git
 
 
-2) Update vendors (You must have php-cli installed)
+2) Update vendors (You must have composer and bower installed )
 
-  - php composer.phar install
+  - composer install
+  - bower install
 
 
 3) Create database (You must have mysql-server running)
