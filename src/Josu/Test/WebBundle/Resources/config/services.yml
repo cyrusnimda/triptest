@@ -1,0 +1,4 @@
+services:
+    app.session_handle:
+        class:     Josu\Test\WebBundle\Service\SessionHandler
+        arguments: [@doctrine.orm.entity_manager, @session]
