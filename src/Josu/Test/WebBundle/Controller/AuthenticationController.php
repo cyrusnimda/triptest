@@ -20,23 +20,21 @@ class AuthenticationController extends Controller
     public function loginAction(Request $request)
     {
     	//Create the customer form
-    	$user = new Customer();
+    	$customer = new Customer();
     	$error = null;
 
-        $loginForm = $this->createForm(new LoginType(), $user);
-        $loginForm->handleRequest($request);
-
+        $loginForm = $this->createForm(new LoginType(), $customer);
         $loginForm->handleRequest($request);
 
         // if the form is sent, save the record
         if ($loginForm->isValid()) {
-            $user = $loginForm->getData();
-            $userLogin = $this->loginSuccess($user);
-            if($userLogin != null){
+            $customer = $loginForm->getData();
+            $customer = $this->loginSuccess($customer);
+            if($customer != null){
                 $session = new Session();
 
                 // set and get session attributes
-                $session->set('loginUser', $userLogin->getId() );
+                $session->set('loggedCustomerId', $customer->getId() );
                 return $this->redirectToRoute('_details');
             } else{
                 $error= "User or password incorrect.";
@@ -44,5 +42,17 @@ class AuthenticationController extends Controller
         }
 
 	    return array('error'=> $error, 'form' => $loginForm->createView());
+    }
+
+    /*
+	 * Check in the database is the customer exists.
+	 * @param Customer $user -> the user to check
+	 *
+	 * return Customer object or null.
+     */
+    private function loginSuccess($user){
+    	$em = $this->getDoctrine()->getManager();
+    	$userLogin = $em->getRepository('JosuTestWebBundle:Customer')->findOneBy( array('email'=>$user->getEmail(), 'password'=>$user->getPassword() ) );
+    	return $userLogin;
     }
 }

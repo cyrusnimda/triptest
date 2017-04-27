@@ -120,7 +120,7 @@ class DefaultController extends Controller
 
     	// if there is no user in session, redirect to login.
     	$session = new Session();
-    	$sessionUser = $session->get('loginUser');
+    	$sessionUser = $session->get('loggedCustomerId');
     	if(!$sessionUser){
     		return false;
     	}
@@ -131,18 +131,6 @@ class DefaultController extends Controller
             throw new NotFoundHttpException("Customer don't found");
     	}
     	return $customer;
-    }
-
-    /*
-	 * Check in the database is the customer exists.
-	 * @param Customer $user -> the user to check
-	 *
-	 * return Customer object or null.
-     */
-    private function loginSuccess($user){
-    	$em = $this->getDoctrine()->getManager();
-    	$userLogin = $em->getRepository('JosuTestWebBundle:Customer')->findOneBy( array('name'=>$user->getName(), 'password'=>$user->getPassword() ) );
-    	return $userLogin;
     }
 
 }
