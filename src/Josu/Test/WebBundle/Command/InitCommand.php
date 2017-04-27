@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\DBAL\DBALException;
 
 use Josu\Test\WebBundle\Entity\Customer;
 
@@ -34,8 +35,13 @@ class InitCommand extends ContainerAwareCommand
         $initCustomer->setCountry("United Kingdom");
 
         $em->persist($initCustomer);
-        $em->flush();
 
-        $output->writeln( "Customer 'triptest' created." );
+        try {
+            $em->flush();
+            $output->writeln( "Customer 'triptest@ontro.co.uk' created." );
+        } catch (DBALException $e) {
+            $output->writeln( "Customer 'triptest@ontro.co.uk' already exits." );
+        }
+
     }
 }
