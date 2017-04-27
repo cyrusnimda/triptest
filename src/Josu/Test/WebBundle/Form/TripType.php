@@ -4,6 +4,7 @@ namespace Josu\Test\WebBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class TripType extends AbstractType
 {
@@ -12,8 +13,14 @@ class TripType extends AbstractType
         $builder
             ->add('departureAirport')
             ->add('destinationAirport')
-            ->add('departureDate')
-            ->add('arrivalDate')
+            ->add('departureDate', new DateTimeType(), array(
+                'widget' => 'single_text',
+                'attr' => ['class' => 'dateTimePicker']
+                ))
+            ->add('arrivalDate', new DateTimeType(), array(
+                'widget' => 'single_text',
+                'attr' => ['class' => 'dateTimePicker']
+                ))
             ->add('passengers', 'entity', array(
                 'class' => 'JosuTestWebBundle:Passenger',
                 'property'     => 'name',

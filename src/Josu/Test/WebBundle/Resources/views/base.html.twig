@@ -3,18 +3,20 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <!-- Loading libreria Bootstrap -->
+        <link rel="stylesheet"  href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet"  href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap-theme.min.css') }}">
         {% block stylesheets %}
-            <!-- Loading libreria Bootstrap -->
+
             {% stylesheets
-                '@JosuTestWebBundle/Resources/public/css/bootstrap.min.css'
-                '@JosuTestWebBundle/Resources/public/css/bootstrap-theme.min.css'
+                'assets/vendor/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.css'
+                'assets/vendor/jquery-ui/themes/base/jquery-ui.css'
+                'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
+                'assets/vendor/bootstrap/dist/css/bootstrap-theme.min.css'
                 '@JosuTestWebBundle/Resources/public/css/main.css'
                 %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
-
-
-
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -35,9 +37,14 @@
                 * jQuery
                 * Bootstrap
              -->
+
             {% javascripts
-                '@JosuTestWebBundle/Resources/public/js/jquery.min.js'
-                '@JosuTestWebBundle/Resources/public/js/bootstrap.min.js' %}
+                'assets/vendor/jquery/dist/jquery.min.js'
+                'assets/vendor/bootstrap/dist/js/bootstrap.min.js'
+                'assets/vendor/jquery-ui/jquery-ui.min.js'
+                'assets/vendor/jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js'
+                '@JosuTestWebBundle/Resources/public/js/main.js'
+                %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
 
