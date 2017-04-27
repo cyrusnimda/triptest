@@ -3,11 +3,15 @@
 namespace Josu\Test\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Customer
  *
- * @ORM\Table()
+ * @ORM\Table(
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(columns={"email"})
+ *     })
  * @ORM\Entity
  */
 class Customer
@@ -24,9 +28,9 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
-    private $name;
+    private $email;
 
     /**
      * @var string
@@ -34,6 +38,13 @@ class Customer
      * @ORM\Column(name="password", type="string", length=50)
      */
     private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=50)
+     */
+    private $name;
 
     /**
      * @var string
@@ -60,7 +71,7 @@ class Customer
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +94,7 @@ class Customer
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -106,7 +117,7 @@ class Customer
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
@@ -129,7 +140,7 @@ class Customer
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -152,7 +163,7 @@ class Customer
     /**
      * Get country
      *
-     * @return string 
+     * @return string
      */
     public function getCountry()
     {
@@ -175,10 +186,33 @@ class Customer
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Customer
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

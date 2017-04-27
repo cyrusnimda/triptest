@@ -16,9 +16,9 @@ Install guide
   - php app/console doctrine:database:create
   - php app/console doctrine:schema:update --force
 
-4) Create at least one costumer
+4) Create first customer, email=triptest@ontro.co.uk, password=triptest
 
-  - use your Mysql favorite client for this.
+  - php app/console triptest:init
 
 
 5) Start the develop server

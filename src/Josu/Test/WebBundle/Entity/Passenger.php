@@ -58,7 +58,7 @@ class Passenger
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -81,7 +81,7 @@ class Passenger
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -104,7 +104,7 @@ class Passenger
     /**
      * Get firstname
      *
-     * @return string 
+     * @return string
      */
     public function getFirstname()
     {
@@ -127,7 +127,7 @@ class Passenger
     /**
      * Get surname
      *
-     * @return string 
+     * @return string
      */
     public function getSurname()
     {
@@ -150,7 +150,7 @@ class Passenger
     /**
      * Get passportid
      *
-     * @return string 
+     * @return string
      */
     public function getPassportid()
     {
@@ -159,5 +159,15 @@ class Passenger
 
     public function getName(){
         return $this->getTitle() . " " . $this->getFirstname() . " " . $this->getSurname();
+    }
+
+    public function getTitles()
+    {
+        return [
+            'Mr' => 'Mr',
+            'Mrs'=> 'Mrs',
+            'Miss'=> 'Miss',
+            'Ms'=> 'Ms',
+        ];
     }
 }
