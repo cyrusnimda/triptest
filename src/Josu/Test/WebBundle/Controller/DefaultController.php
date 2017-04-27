@@ -7,9 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Josu\Test\WebBundle\Entity\Passenger;
-use Josu\Test\WebBundle\Entity\Customer;
+
 use Symfony\Component\HttpFoundation\Session\Session;
 use Josu\Test\WebBundle\Entity\Trip;
+
 use Josu\Test\WebBundle\Form\TripType;
 use Josu\Test\WebBundle\Form\PassengerType;
 
@@ -85,42 +86,6 @@ class DefaultController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('_details'));
-    }
-
-     /**
-     * @Route("/login", name="login_route")
-     * @Template()
-     */
-    public function loginAction(Request $request)
-    {
-    	//Create the customer form
-    	$user = new Customer();
-    	$error = null;
-
-        $form = $this->createFormBuilder($user)
-            ->add('name', 'text')
-            ->add('password', 'password')
-            ->add('submit', 'submit', array('label' => 'Login'))
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        // if the form is sent, save the record
-        if ($form->isValid()) {
-            $user = $form->getData();
-            $userLogin = $this->loginSuccess($user);
-            if($userLogin != null){
-                $session = new Session();
-
-                // set and get session attributes
-                $session->set('loginUser', $userLogin->getId() );
-                return $this->redirectToRoute('_details');
-            } else{
-                $error= "User or password incorrect.";
-            }
-        }
-
-	    return array('error'=> $error, 'form' => $form->createView());
     }
 
     /**
