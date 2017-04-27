@@ -5,7 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <!-- Loading libreria Bootstrap -->
-            {% stylesheets 
+            {% stylesheets
                 '@JosuTestWebBundle/Resources/public/css/bootstrap.min.css'
                 '@JosuTestWebBundle/Resources/public/css/bootstrap-theme.min.css'
                 '@JosuTestWebBundle/Resources/public/css/main.css'
@@ -26,22 +26,16 @@
             <hr />
             <div class="sectionBody">{% block body %}{% endblock %}</div>
             <div style="clear:both;">
-            <hr />
-            <footer class="footer col-xs-12">
-              <div class="container">
-                <p>Josu Ruiz. cyrusnimda@gmail.com</p>
-              </div>
-            </footer> 
         </div>
-        
-    
+
+
 
         {% block javascripts %}
-            <!-- Loading all libraries we need in the app: 
+            <!-- Loading all libraries we need in the app:
                 * jQuery
                 * Bootstrap
              -->
-            {% javascripts 
+            {% javascripts
                 '@JosuTestWebBundle/Resources/public/js/jquery.min.js'
                 '@JosuTestWebBundle/Resources/public/js/bootstrap.min.js' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>

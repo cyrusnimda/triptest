@@ -6,23 +6,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Josu\Test\WebBundle\Entity\Trip;
+
 class TripController extends Controller
 {
     /**
-     * @Route("/trip/delete/{trip_id}", name="trip_id", requirements={"trip_id" = "\d+"}, defaults={"trip_id" = 0})
+     * @Route("/trip/delete/{trip}", name="delete_trip")
      */
-    public function deleteTripAction($trip_id)
+    public function deleteTripAction(Trip $trip)
     {
-        // check if is a valid id, throw exception in other case.
-        if($trip_id == 0)
+        // check if it is a valid id, throw exception in other case.
+        if(!$trip){
             throw new Exception("Don't be evil");
-
-        $em = $this->getDoctrine()->getManager();
-        $trip = $em->getRepository('JosuTestWebBundle:Trip')->find($trip_id);
-        if(!$trip)
-            throw new NotFoundHttpException("trip don't found");
+        }
 
         //delete the trip and redirect to details page
+        $em = $this->getDoctrine()->getManager();
         $em->remove($trip);
         $em->flush();
 
