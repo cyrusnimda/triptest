@@ -31,12 +31,8 @@ class CustomerController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        // Check is the user is logged in the system
-        $sessionHandler = $this->get("app.session_handle");
-        $customer = $sessionHandler->loadSessionUser();
-        if(!$customer){
-            return $this->redirectToRoute('login_route');
-        }
+        // Get user
+        $customer = $this->getUser();
 
         //Create customer form
         $customerForm = $this->createForm(new CustomerType(), $customer);
