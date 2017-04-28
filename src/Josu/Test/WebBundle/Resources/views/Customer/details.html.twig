@@ -3,7 +3,7 @@
 {% block body %}
 	<div>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-6">
 				<div class="panel panel-info">
 
 					<div class="panel-heading">
@@ -13,40 +13,13 @@
 					<div class="panel-body">
 
 						<div class="row">
-							<div class="col-sm-4">
-							    <strong>Name:</strong>
-						    </div>
-						    <div class="col-sm-8">
-							    <span>{{ customer.name}}</span>
-						    </div>
-						</div>
-
-						<div class="row">
-							<div class="col-sm-4">
-							    <strong>Address:</strong>
-						    </div>
-						    <div class="col-sm-8">
-							    <span>{{ customer.address}}</span>
+							<div class="col-sm-12">
+								{{ form_start(customerForm) }}
+								{{ form_widget(customerForm) }}
+								{{ form_end(customerForm) }}
 						    </div>
 						</div>
 
-						<div class="row">
-							<div class="col-sm-4">
-							    <strong>City:</strong>
-						    </div>
-						    <div class="col-sm-8">
-							    <span>{{ customer.city}}</span>
-						    </div>
-						</div>
-
-						<div class="row">
-							<div class="col-sm-4">
-							    <strong>Country:</strong>
-						    </div>
-						    <div class="col-sm-8">
-							    <span>{{ customer.country}}</span>
-						    </div>
-						</div>
 			        </div>
 			    </div>
 			</div>
@@ -61,7 +34,7 @@
 					</div>
 					<div class="panel-body">
 
-						<table class="table">
+						<table class="table table-striped">
 							<tr>
 								<th>Title</th>
 								<th>First Name</th>
@@ -97,7 +70,7 @@
 					</div>
 			        <div class="panel-body">
 
-						<table class="table">
+						<table class="table table-striped">
 							<tr>
 								<th>From</th>
 								<th>To</th>
@@ -145,9 +118,9 @@
 	                <strong>Add passsenger</strong>
 	            </div>
 	            <div class="modal-body">
-	                {{ form_start(form) }}
-					{{ form_widget(form) }}
-					{{ form_end(form) }}
+	                {{ form_start(passengerForm) }}
+					{{ form_widget(passengerForm) }}
+					{{ form_end(passengerForm) }}
 	            </div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
