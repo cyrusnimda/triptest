@@ -4,6 +4,7 @@ namespace Josu\Test\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Customer
@@ -28,6 +29,7 @@ class Customer
     /**
      * @var string
      *
+     * @Assert\Email()
      * @ORM\Column(type="string", length=50)
      */
     private $email;
@@ -42,6 +44,7 @@ class Customer
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=50)
      */
     private $name;
@@ -49,6 +52,7 @@ class Customer
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="address", type="string", length=255)
      */
     private $address;
@@ -56,6 +60,7 @@ class Customer
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="city", type="string", length=50)
      */
     private $city;
@@ -63,6 +68,7 @@ class Customer
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="country", type="string", length=50)
      */
     private $country;
@@ -209,7 +215,7 @@ class Customer
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {

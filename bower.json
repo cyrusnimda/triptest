@@ -1,0 +1,23 @@
+{
+  "name": "triptest",
+  "authors": [
+    "Josu Ruiz <josu@ontro.co.uk>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-ui": "^1.12.1",
+    "bootstrap": "^3.3.7",
+    "jqueryui-timepicker-addon": "^1.6.3"
+  }
+}

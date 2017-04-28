@@ -14,6 +14,13 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthenticationController extends Controller
 {
     /**
+    * @Route("/")
+    */
+    public function defaultAction(Request $request)
+    {
+        return $this->redirectToRoute('_details');
+    }
+    /**
     * @Route("/login", name="login_route")
     * @Template()
     */

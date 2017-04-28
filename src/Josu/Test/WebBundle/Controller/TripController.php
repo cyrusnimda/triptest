@@ -5,6 +5,7 @@ namespace Josu\Test\WebBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Josu\Test\WebBundle\Service\SessionHandler;
 
 use Josu\Test\WebBundle\Entity\Trip;
 
@@ -15,6 +16,13 @@ class TripController extends Controller
      */
     public function deleteTripAction(Trip $trip)
     {
+        // Check is the user is logged in the system
+        $sessionHandler = $this->get("app.session_handle");
+        $customer = $sessionHandler->loadSessionUser();
+        if(!$customer){
+            return $this->redirectToRoute('login_route');
+        }
+        
         // check if it is a valid id, throw exception in other case.
         if(!$trip){
             throw new Exception("Don't be evil");

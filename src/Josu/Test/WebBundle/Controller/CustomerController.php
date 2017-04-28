@@ -7,13 +7,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
+use Josu\Test\WebBundle\Entity\Customer;
 use Josu\Test\WebBundle\Entity\Passenger;
 use Josu\Test\WebBundle\Entity\Trip;
 
+use Josu\Test\WebBundle\Form\CustomerType;
 use Josu\Test\WebBundle\Form\TripType;
 use Josu\Test\WebBundle\Form\PassengerType;
 use Josu\Test\WebBundle\Service\SessionHandler;
 
+/**
+ * @Route("/customer")
+ */
 class CustomerController extends Controller
 {
 
@@ -33,29 +38,42 @@ class CustomerController extends Controller
             return $this->redirectToRoute('login_route');
         }
 
-        //Create de passenger form
-        $passenger = new Passenger();
-        $passengerForm = $this->createForm(new PassengerType(), $passenger);
-        $passengerForm->handleRequest($request);
+        //Create customer form
+        $customerForm = $this->createForm(new CustomerType(), $customer);
 
         // if the passenger form is sent, save the record
-        if ($passengerForm->isValid()) {
-            $em->persist($passengerForm->getData());
-            $em->flush();
+        $customerForm->handleRequest($request);
+        if ($customerForm->isSubmitted() && $customerForm->isValid()) {
+            $editedCustomer = $customerForm->getData();
+            $em->persist($editedCustomer);
+            $em->flush($editedCustomer);
+            return $this->redirectToRoute('_details');
+        }
+
+        //Create passenger form
+        $passenger = new Passenger();
+        $passengerForm = $this->createForm(new PassengerType(), $passenger);
+
+        // if the passenger form is sent, save the record
+        $passengerForm->handleRequest($request);
+        if ($passengerForm->isSubmitted() && $passengerForm->isValid()) {
+            $passenger = $passengerForm->getData();
+            $em->persist($passenger);
+            $em->flush($passenger);
             return $this->redirectToRoute('_details');
         }
 
         // Create the trip form
         $trip = new Trip();
         $tripForm = $this->createForm(new TripType(), $trip);
-        $tripForm->handleRequest($request);
 
         // if the trip form is sent, save the record
-        if ($tripForm->isValid()) {
+        $tripForm->handleRequest($request);
+        if ($tripForm->isSubmitted() && $tripForm->isValid()) {
             $trip = $tripForm->getData();
             $trip->setCustomer($customer);
             $em->persist($trip);
-            $em->flush();
+            $em->flush($trip);
             return $this->redirectToRoute('_details');
         }
 
@@ -65,6 +83,12 @@ class CustomerController extends Controller
         //show all trips from the actual customer
         $trips = $em->getRepository('JosuTestWebBundle:Trip')->findByCustomer($customer);
 
-        return array('tripForm'=>$tripForm->createView(), 'trips'=>$trips,'customer' => $customer, 'form' => $passengerForm->createView(), 'passengers' => $passengers);
+        return array(
+            'customerForm' => $customerForm->createView(),
+            'passengerForm' => $passengerForm->createView(),
+            'tripForm'=>$tripForm->createView(),
+            'passengers' => $passengers,
+            'trips'=>$trips,'customer' => $customer,
+        );
     }
 }

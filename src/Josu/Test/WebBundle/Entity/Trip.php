@@ -57,7 +57,7 @@ class Trip
      * @ORM\ManyToMany(targetEntity="Passenger", inversedBy="null", cascade={"persist"})
      * @ORM\JoinTable(name="trip_passenger",
      * joinColumns={@ORM\JoinColumn(name="trip_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="passenger_id", referencedColumnName="id")}
+     * inverseJoinColumns={@ORM\JoinColumn(name="passenger_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     private $passengers;
@@ -71,7 +71,7 @@ class Trip
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -94,7 +94,7 @@ class Trip
     /**
      * Get departureAirport
      *
-     * @return string 
+     * @return string
      */
     public function getDepartureAirport()
     {
@@ -117,7 +117,7 @@ class Trip
     /**
      * Get destinationAirport
      *
-     * @return string 
+     * @return string
      */
     public function getDestinationAirport()
     {
@@ -140,7 +140,7 @@ class Trip
     /**
      * Get departureDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDepartureDate()
     {
@@ -163,7 +163,7 @@ class Trip
     /**
      * Get arrivalDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getArrivalDate()
     {
@@ -203,7 +203,7 @@ class Trip
     /**
      * Get passengers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPassengers()
     {
@@ -226,7 +226,7 @@ class Trip
     /**
      * Get customer
      *
-     * @return \Josu\Test\WebBundle\Entity\Customer 
+     * @return \Josu\Test\WebBundle\Entity\Customer
      */
     public function getCustomer()
     {
