@@ -5,6 +5,7 @@ namespace Josu\Test\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Customer
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     })
  * @ORM\Entity
  */
-class Customer
+class Customer implements UserInterface
 {
     /**
      * @var integer
@@ -220,5 +221,21 @@ class Customer
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function getRoles(){
+        return ["ROLE_USER"];
+    }
+
+    public function getSalt(){
+        return null;
+    }
+
+    public function getUsername(){
+        return $this->email;
+    }
+
+    public function eraseCredentials(){
+        return null;
     }
 }

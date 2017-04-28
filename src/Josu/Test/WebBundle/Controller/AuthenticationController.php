@@ -20,46 +20,26 @@ class AuthenticationController extends Controller
     {
         return $this->redirectToRoute('_details');
     }
+    
     /**
-    * @Route("/login", name="login_route")
+    * @Route("/login", name="login")
     * @Template()
     */
     public function loginAction(Request $request)
     {
-    	//Create the customer form
-    	$customer = new Customer();
-    	$error = null;
+        $authenticationUtils = $this->get('security.authentication_utils');
 
-        $loginForm = $this->createForm(new LoginType(), $customer);
-        $loginForm->handleRequest($request);
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
 
-        // if the form is sent, save the record
-        if ($loginForm->isValid()) {
-            $customer = $loginForm->getData();
-            $customer = $this->loginSuccess($customer);
-            if($customer != null){
-                $session = new Session();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-                // set and get session attributes
-                $session->set('loggedCustomerId', $customer->getId() );
-                return $this->redirectToRoute('_details');
-            } else{
-                $error= "User or password incorrect.";
-            }
-        }
+        return [
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ];
 
-	    return array('error'=> $error, 'form' => $loginForm->createView());
     }
 
-    /*
-	 * Check in the database is the customer exists.
-	 * @param Customer $user -> the user to check
-	 *
-	 * return Customer object or null.
-     */
-    private function loginSuccess($user){
-    	$em = $this->getDoctrine()->getManager();
-    	$userLogin = $em->getRepository('JosuTestWebBundle:Customer')->findOneBy( array('email'=>$user->getEmail(), 'password'=>$user->getPassword() ) );
-    	return $userLogin;
-    }
 }
