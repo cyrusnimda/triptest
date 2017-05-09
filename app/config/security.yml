@@ -36,6 +36,9 @@ security:
             form_login:
                 login_path: /login
                 check_path: /login
+                username_parameter:  login[email]
+                password_parameter:  login[password]
+                csrf_parameter:      login[_token]
 
     # with these settings you can restrict or allow access for different parts
     # of your application based on roles, ip, host or methods
