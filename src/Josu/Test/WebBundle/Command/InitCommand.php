@@ -27,9 +27,15 @@ class InitCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get("doctrine")->getManager();
 
         $initCustomer = new Customer();
+
+        // Get bcrypt password
+        $encoderFactory = $this->getContainer()->get('security.encoder_factory');
+        $encoder = $encoderFactory->getEncoder($initCustomer);
+        $password = $encoder->encodePassword('triptest', null);
+
         $initCustomer->setName("Ontro");
         $initCustomer->setEmail("triptest@ontro.co.uk");
-        $initCustomer->setPassword("triptest");
+        $initCustomer->setPassword($password);
         $initCustomer->setAddress("Chitty Street");
         $initCustomer->setCity("London");
         $initCustomer->setCountry("United Kingdom");

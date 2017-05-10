@@ -27,19 +27,21 @@ class AuthenticationController extends Controller
     */
     public function loginAction(Request $request)
     {
+
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        //Create the customer login form
+        $customer = new Customer();
+        $loginForm = $this->createForm(new LoginType(), $customer);
 
         return [
-            'last_username' => $lastUsername,
-            'error'         => $error,
+            'error'=> $error,
+            'loginForm' => $loginForm->createView()
         ];
 
     }
-
+ 
 }
